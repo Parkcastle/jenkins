@@ -1,32 +1,29 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: hello-python-service
-spec:
-  selector:
-    app: hello-python
-  ports:
-  - protocol: "TCP"
-    port: 6000
-    targetPort: 5000
-  type: LoadBalancer
-
-
----
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-python
+  namespace: default
+  name: castle-image
+  labels:
+    app: castle-image
+    version: v1
 spec:
-  replicas: 4
+  replicas: 2
+  selector:
+    matchLabels:
+      app: castle-image
+      version: v1
   template:
     metadata:
       labels:
-        app: hello-python
+        app: castle-image
+        version: v1
     spec:
       containers:
-      - name: hello-python
-        image: hello-python:latest
-        imagePullPolicy: Never
-        ports:
-        - containerPort: 5000
+        - name: castle-image
+          image: 546703828218.dkr.ecr.ap-northeast-2.amazonaws.com/castle_ecr:1
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 9000
