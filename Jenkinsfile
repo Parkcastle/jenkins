@@ -49,7 +49,6 @@ pipeline {
             '''
               }
          }
-
     stage('============ Deploy workload ============') {
         when { expression { return params.DEPLOY_WORKLOAD } }
         steps {
